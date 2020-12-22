@@ -106,7 +106,7 @@ class Calendar:
     s.CB_month.grid(in_=hframe, column=3, row=0)
     s.CB_month.bind("<<ComboboxSelected>>", s._update)
     tk.Label(hframe, text = '月', justify = 'left').grid(in_=hframe, column=4, row=0)
-    # 日历部件
+    # 日歷部件
     s._calendar = ttk.Treeview(gframe, show='', selectmode='none', height=7)
     s._calendar.pack(expand=1, fill='both', side='bottom', padx=5)
     ttk.Button(bframe, text = "確 定", width = 6, command = lambda: s._exit(True)).grid(row = 0, column = 0, sticky = 'ns', padx = 20)
@@ -294,7 +294,6 @@ if __name__ == '__main__':
                    command = close_window)
   window.geometry("450x400")
   window.title("調閱收支")
-  window.configure(bg='red')
   window.mainloop()
   
   
