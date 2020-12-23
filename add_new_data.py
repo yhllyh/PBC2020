@@ -2,6 +2,26 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import gvar
+import time
+import datetime
+
+
+def bisearch(line, cp):
+    lf = 0
+    rt = len(line)-1
+    temp = len(line)+1
+    cp_date = time.strptime(cp[1], "%Y/%m/%d")
+    while lf <= rt:
+        mid = (lf + rt) // 2
+        mid_date = time.strptime(line[mid][1], "%Y/%m/%d")
+        if mid_date <= cp_date:
+            lf = mid+1
+        elif mid_date > cp_date:
+            temp = mid
+            rt = mid-1
+    return temp
+
+
 window = tk.Tk()
 
 window.title('記帳小幫手')
@@ -49,11 +69,13 @@ def getdata():
     cur_date = ndate.get()
     cur_cat = ncat.get()
     cur_money = nmoney.get()
-    line = cur_date + " " + cur_cat + " " + cur_money
+    line = [cur_opt, cur_date, cur_cat, cur_money]
     if(cur_opt == "收入"):
-        gvar.rev.append(line)
+        pos = bisearch(gvar.rev, line)
+        gvar.rev.insert(pos, line)
     elif(cur_opt == "支出"):
-        gvar.exp.append(line)
+        pos = bisearch(gvar.exp, line)
+        gvar.exp.insert(pos, line)
     else:
         messagebox.showinfo("輸入錯誤", "數值錯誤")
     # messagebox.showinfo("已新增", line)
