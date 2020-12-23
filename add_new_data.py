@@ -4,9 +4,10 @@ from tkinter import messagebox
 import gvar
 import time
 import datetime
+import func
 
 
-def bisearch(line, cp):
+"""def bisearch(line, cp):
     lf = 0
     rt = len(line)-1
     temp = len(line)+1
@@ -19,7 +20,7 @@ def bisearch(line, cp):
         elif mid_date > cp_date:
             temp = mid
             rt = mid-1
-    return temp
+    return temp"""
 
 
 window = tk.Tk()
@@ -71,10 +72,10 @@ def getdata():
     cur_money = nmoney.get()
     line = [cur_opt, cur_date, cur_cat, cur_money]
     if(cur_opt == "收入"):
-        pos = bisearch(gvar.rev, line)
+        pos = func.bisearch(gvar.rev, line)
         gvar.rev.insert(pos, line)
     elif(cur_opt == "支出"):
-        pos = bisearch(gvar.exp, line)
+        pos = func.bisearch(gvar.exp, line)
         gvar.exp.insert(pos, line)
     else:
         messagebox.showinfo("輸入錯誤", "數值錯誤")
