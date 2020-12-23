@@ -161,7 +161,7 @@ class Calendar:
     def _build_calendar(s):
         year, month = s._date.year, s._date.month
         header = s._cal.formatmonthname(year, month, 0)
-        # 更新日歷顯示的日期
+        # 更新日曆顯示的日期
         cal = s._cal.monthdayscalendar(year, month)
         for indx, item in enumerate(s._items):
             week = cal[indx] if indx < len(cal) else []
@@ -348,31 +348,35 @@ with open(file='data.txt', mode='r', encoding='utf-8') as f:
 
 
 """輸出結果為表格形式"""
-
-exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
-rev = ["2020-11-02, 收入, 家教, 800"]
+exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
+# exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
+rev = [["收入", "2020-11-02", "家教", "800"]]
 
 
 result = tk.Tk()
 tree = ttk.Treeview(result)  # 表格
-tree["columns"] = ("時間", "類別", "收支", "金額")
-tree.column("時間", width=200)  # 表示列,不顯示
+tree["columns"] = ("收支", "時間", "類別", "金額")
 tree.column("收支", width=100)
+tree.column("時間", width=200)  # 表示列,不顯示
 tree.column("類別", width=100)
 tree.column("金額", width=100)
 
-tree.heading("時間", text="時間")  # 顯示錶頭
 tree.heading("收支", text="收支")
+tree.heading("時間", text="時間")  # 顯示錶頭
 tree.heading("類別", text="類別")
 tree.heading("金額", text="金額")
 
 for i in range(len(rev)):
-    word = rev[i].split(",")
-    tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
+    # word = rev[i].split(",")
+    # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
+    tree.insert("", i, values=(rev[i][0], rev[i]
+                               [1], rev[i][2], rev[i][3]))  # 插入資料
 
 for i in range(len(exp)):
-    word = exp[i].split(",")
-    tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
+    # word = exp[i].split(",")
+    # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
+    tree.insert("", i, values=(exp[i][0], exp[i]
+                               [1], exp[i][2], exp[i][3]))  # 插入資料
 
 
 tree.pack()
