@@ -6,6 +6,7 @@ from tkinter import ttk
 import func
 import datetime as r_datetime
 import time as r_time
+import gvar
 datetime = calendar.datetime.datetime
 c_timedelta = calendar.datetime.timedelta
 
@@ -340,9 +341,9 @@ if __name__ == '__main__':
 
 
 """輸出結果為表格形式"""
-exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
+# exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
 # exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
-rev = [["收入", "2020/11/02", "家教", "800"]]
+# rev = [["收入", "2020/11/02", "家教", "800"]]
 
 
 result = tk.Tk()
@@ -368,20 +369,20 @@ rt_date = ed_date.replace('-', '/')
 """收入的範圍"""
 lf_line = ["收入", lf_date, "", ""]
 rt_line = ["收入", rt_date, "", ""]
-lf_pos = func.bisearch(rev, lf_line)
-rt_pos = func.bisearch(rev, rt_line)
+lf_pos = func.bisearch(gvar.rev, lf_line)
+rt_pos = func.bisearch(gvar.rev, rt_line)
 for i in range(lf_pos, rt_pos):
-    tree.insert("", i, values=(rev[i][0], rev[i]
-                               [1], rev[i][2], rev[i][3]))  # 插入資料
+    tree.insert("", i, values=(gvar.rev[i][0], gvar.rev[i]
+                               [1], gvar.rev[i][2], gvar.rev[i][3]))  # 插入資料
 
 lf_line = ["支出", lf_date, "", ""]
 rt_line = ["支出", rt_date, "", ""]
-lf_pos = func.bisearch(exp, lf_line)
-rt_pos = func.bisearch(exp, rt_line)
+lf_pos = func.bisearch(gvar.exp, lf_line)
+rt_pos = func.bisearch(gvar.exp, rt_line)
 
 for i in range(lf_pos, rt_pos):
-    tree.insert("", i, values=(exp[i][0], exp[i]
-                               [1], exp[i][2], exp[i][3]))  # 插入資料
+    tree.insert("", i, values=(gvar.exp[i][0], gvar.exp[i]
+                               [1], gvar.exp[i][2], gvar.exp[i][3]))  # 插入資料
 
 tree.pack()
 result.configure(bg='red')
