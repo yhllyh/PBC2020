@@ -3,8 +3,8 @@ import calendar
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
-datetime = calendar.datetime.datetime
-timedelta = calendar.datetime.timedelta
+c_datetime = calendar.datetime.datetime
+c_timedelta = calendar.datetime.timedelta
 
 """用日曆選擇想要查的時間段"""
 
@@ -15,12 +15,12 @@ class Calendar:
         s.master.withdraw()
         s.master.attributes('-topmost', True)
         fwday = calendar.SUNDAY
-        year = datetime.now().year
-        month = datetime.now().month
+        year = c_datetime.now().year
+        month = c_datetime.now().month
         locale = None
         sel_bg = '#ecffc4'
         sel_fg = '#05640e'
-        s._date = datetime(year, month, 1)  # 每月第一日
+        s._date = c_datetime(year, month, 1)  # 每月第一日
         s._selection = None  # 設置為未選中日期
         s.G_Frame = ttk.Frame(s.master)
         s._cal = s.__get_calendar(locale, fwday)
@@ -101,7 +101,7 @@ class Calendar:
         rbtn = ttk.Button(hframe, style='R.TButton', command=s._next_month)
         rbtn.grid(in_=hframe, column=5, row=0, padx=12)
         s.CB_year = ttk.Combobox(hframe, width=5, values=[str(year) for year in range(datetime.now(
-        ).year, datetime.now().year-11, -1)], validate='key', validatecommand=(Input_judgment_num, '%P'))
+        ).year, c_datetime.now().year-11, -1)], validate='key', validatecommand=(Input_judgment_num, '%P'))
         s.CB_year.current(0)
         s.CB_year.grid(in_=hframe, column=1, row=0)
         s.CB_year.bind('<KeyPress>', lambda event: s._update(event, True))
@@ -110,7 +110,7 @@ class Calendar:
             in_=hframe, column=2, row=0, padx=(0, 5))
         s.CB_month = ttk.Combobox(hframe, width=3, values=[
                                   '%02d' % month for month in range(1, 13)], state='readonly')
-        s.CB_month.current(datetime.now().month - 1)
+        s.CB_month.current(c_datetime.now().month - 1)
         s.CB_month.grid(in_=hframe, column=3, row=0)
         s.CB_month.bind("<<ComboboxSelected>>", s._update)
         tk.Label(hframe, text='月', justify='left').grid(
@@ -206,7 +206,7 @@ class Calendar:
         s._canvas.place_forget()
         s._selection = None
         s._date = s._date - timedelta(days=1)
-        s._date = datetime(s._date.year, s._date.month, 1)
+        s._date = c_datetime(s._date.year, s._date.month, 1)
         s.CB_year.set(s._date.year)
         s.CB_month.set(s._date.month)
         s._update()
@@ -219,7 +219,7 @@ class Calendar:
         year, month = s._date.year, s._date.month
         s._date = s._date + timedelta(
             days=calendar.monthrange(year, month)[1] + 1)
-        s._date = datetime(s._date.year, s._date.month, 1)
+        s._date = c_datetime(s._date.year, s._date.month, 1)
         s.CB_year.set(s._date.year)
         s.CB_month.set(s._date.month)
         s._update()
@@ -233,10 +233,10 @@ class Calendar:
         if year == 0 or year > 9999:
             return
         s._canvas.place_forget()
-        s._date = datetime(year, month, 1)
+        s._date = c_datetime(year, month, 1)
         s._build_calendar()  # 重建日歷
-        if year == datetime.now().year and month == datetime.now().month:
-            day = datetime.now().day
+        if year == c_datetime.now().year and month == c_datetime.now().month:
+            day = c_datetime.now().day
             for _item, day_list in enumerate(s._cal.monthdayscalendar(year, month)):
                 if day in day_list:
                     item = 'I00' + str(_item + 2)
@@ -264,7 +264,7 @@ class Calendar:
         if not s._selection:
             return None
         year, month = s._date.year, s._date.month
-        return str(datetime(year, month, int(s._selection[0])))[:10]
+        return str(c_datetime(year, month, int(s._selection[0])))[:10]
 
     def Input_judgment(s, content):
         # 輸入判斷
