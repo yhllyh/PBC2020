@@ -1,4 +1,6 @@
 import gvar
+
+
 def do():
     with open(file='data.txt', mode='r', encoding='utf-8') as f:
         change = False
@@ -12,3 +14,4 @@ def do():
                 gvar.rev.append(line)
             else:
                 gvar.exp.append(line)
+
