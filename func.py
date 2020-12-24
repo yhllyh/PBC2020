@@ -2,10 +2,11 @@ import read_old_data
 import gvar
 import time
 
+
 def bisearch(line, cp):
     lf = 0
     rt = len(line)-1
-    temp = len(line)+1
+    temp = len(line)
     cp_date = time.strptime(cp[1], "%Y/%m/%d")
     while lf <= rt:
         mid = (lf + rt) // 2
