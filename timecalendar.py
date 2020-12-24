@@ -3,10 +3,16 @@ import calendar
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
+import func
+import datetime
+import time
 c_datetime = calendar.datetime.datetime
 c_timedelta = calendar.datetime.timedelta
 
 """用日曆選擇想要查的時間段"""
+
+st_date = "0000/00/00"
+ed_date = "0000/00/00"
 
 
 class Calendar:
@@ -298,9 +304,13 @@ class datepicker:
             if date:
                 if(type == 'start'):  # 如果是開始按紐，就賦值給開始日期
                     s.start_date.set(date)
+                    global st_date
+                    st_date = date
                     print(date)
                 elif(type == 'end'):
                     s.end_date.set(date)
+                    global ed_date
+                    ed_date = date
                     print(date)
 
 
@@ -366,13 +376,26 @@ tree.heading("時間", text="時間")  # 顯示錶頭
 tree.heading("類別", text="類別")
 tree.heading("金額", text="金額")
 
+# print("#" + st_date)
+# print("#" + ed_date)
+
 for i in range(len(rev)):
+    # in_date = '2016-08-31'
+    st_dt = datetime.datetime.strptime(st_date, "%Y-%m-%d")
+    lf_date = (st_dt + datetime.timedelta(days=-1)).strftime("%Y/%m/%d")
+    # st_date = st_date.replace('-', '/')
+    # print(st_date)
+    lf_line = ["收入", lf_date, "", ""]
+    print(lf_line)
+    # lf_pos = func.bisearch(rev, lf_line)
     # word = rev[i].split(",")
     # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
     tree.insert("", i, values=(rev[i][0], rev[i]
                                [1], rev[i][2], rev[i][3]))  # 插入資料
 
 for i in range(len(exp)):
+    ed_date = ed_date.replace('-', '/')
+    ed_line = ["收入", ed_date, "", ""]
     # word = exp[i].split(",")
     # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
     tree.insert("", i, values=(exp[i][0], exp[i]
