@@ -8,7 +8,7 @@ import datetime as r_datetime
 import time as r_time
 import gvar
 datetime = calendar.datetime.datetime
-c_timedelta = calendar.datetime.timedelta
+timedelta = calendar.datetime.timedelta
 
 """用日曆選擇想要查的時間段"""
 
