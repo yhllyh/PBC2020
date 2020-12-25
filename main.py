@@ -2,7 +2,6 @@ import gvar
 import read_old_data
 import add_new_data
 import update_data_file
-# import timecalendar
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
@@ -10,7 +9,7 @@ import gvar
 import time
 import datetime
 import func
-import timecalendar_bug as timebug
+
 
 def homewin():
     add_new_data.do()
