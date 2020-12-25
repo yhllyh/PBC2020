@@ -10,15 +10,15 @@ import gvar
 import time
 import datetime
 import func
-
+import timecalendar_bug as timebug
 
 def homewin():
     add_new_data.do()
     update_data_file.do()
 
 
-# def statwin():
-#     timecalendar.do()
+def statwin():
+    timebug.do()
 
 
 read_old_data.do()
@@ -30,7 +30,7 @@ window.title("Test")
 menubar = tk.Menu(window)
 # menubar.add_command(label="主頁", command=homewin)
 # menubar.add_command(label="明細", command = )
-# menubar.add_command(label="統計", command=statwin)
+menubar.add_command(label="統計", command=statwin)
 menubar.add_command(label="退出", command=window.quit)
 window.config(menu=menubar)
 window.title('記帳小幫手')
