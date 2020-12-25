@@ -4,15 +4,16 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 import func
-import datetime
-import time
-c_datetime = calendar.datetime.datetime
-c_timedelta = calendar.datetime.timedelta
+import datetime as r_datetime
+import time as r_time
+import gvar
+datetime = calendar.datetime.datetime
+timedelta = calendar.datetime.timedelta
 
 """用日曆選擇想要查的時間段"""
 
-st_date = "0000/00/00"
-ed_date = "0000/00/00"
+st_date = "2020-12-25"
+ed_date = "2020-12-25"
 
 
 class Calendar:
@@ -21,12 +22,12 @@ class Calendar:
         s.master.withdraw()
         s.master.attributes('-topmost', True)
         fwday = calendar.SUNDAY
-        year = c_datetime.now().year
-        month = c_datetime.now().month
+        year = datetime.now().year
+        month = datetime.now().month
         locale = None
         sel_bg = '#ecffc4'
         sel_fg = '#05640e'
-        s._date = c_datetime(year, month, 1)  # 每月第一日
+        s._date = datetime(year, month, 1)  # 每月第一日
         s._selection = None  # 設置為未選中日期
         s.G_Frame = ttk.Frame(s.master)
         s._cal = s.__get_calendar(locale, fwday)
@@ -107,7 +108,7 @@ class Calendar:
         rbtn = ttk.Button(hframe, style='R.TButton', command=s._next_month)
         rbtn.grid(in_=hframe, column=5, row=0, padx=12)
         s.CB_year = ttk.Combobox(hframe, width=5, values=[str(year) for year in range(datetime.now(
-        ).year, c_datetime.now().year-11, -1)], validate='key', validatecommand=(Input_judgment_num, '%P'))
+        ).year, datetime.now().year-11, -1)], validate='key', validatecommand=(Input_judgment_num, '%P'))
         s.CB_year.current(0)
         s.CB_year.grid(in_=hframe, column=1, row=0)
         s.CB_year.bind('<KeyPress>', lambda event: s._update(event, True))
@@ -116,7 +117,7 @@ class Calendar:
             in_=hframe, column=2, row=0, padx=(0, 5))
         s.CB_month = ttk.Combobox(hframe, width=3, values=[
                                   '%02d' % month for month in range(1, 13)], state='readonly')
-        s.CB_month.current(c_datetime.now().month - 1)
+        s.CB_month.current(datetime.now().month - 1)
         s.CB_month.grid(in_=hframe, column=3, row=0)
         s.CB_month.bind("<<ComboboxSelected>>", s._update)
         tk.Label(hframe, text='月', justify='left').grid(
@@ -212,7 +213,7 @@ class Calendar:
         s._canvas.place_forget()
         s._selection = None
         s._date = s._date - timedelta(days=1)
-        s._date = c_datetime(s._date.year, s._date.month, 1)
+        s._date = datetime(s._date.year, s._date.month, 1)
         s.CB_year.set(s._date.year)
         s.CB_month.set(s._date.month)
         s._update()
@@ -225,7 +226,7 @@ class Calendar:
         year, month = s._date.year, s._date.month
         s._date = s._date + timedelta(
             days=calendar.monthrange(year, month)[1] + 1)
-        s._date = c_datetime(s._date.year, s._date.month, 1)
+        s._date = datetime(s._date.year, s._date.month, 1)
         s.CB_year.set(s._date.year)
         s.CB_month.set(s._date.month)
         s._update()
@@ -239,10 +240,10 @@ class Calendar:
         if year == 0 or year > 9999:
             return
         s._canvas.place_forget()
-        s._date = c_datetime(year, month, 1)
+        s._date = datetime(year, month, 1)
         s._build_calendar()  # 重建日歷
-        if year == c_datetime.now().year and month == c_datetime.now().month:
-            day = c_datetime.now().day
+        if year == datetime.now().year and month == datetime.now().month:
+            day = datetime.now().day
             for _item, day_list in enumerate(s._cal.monthdayscalendar(year, month)):
                 if day in day_list:
                     item = 'I00' + str(_item + 2)
@@ -270,7 +271,7 @@ class Calendar:
         if not s._selection:
             return None
         year, month = s._date.year, s._date.month
-        return str(c_datetime(year, month, int(s._selection[0])))[:10]
+        return str(datetime(year, month, int(s._selection[0])))[:10]
 
     def Input_judgment(s, content):
         # 輸入判斷
@@ -317,91 +318,72 @@ class datepicker:
 def close_window():
     window.destroy()
 
+def do():
+    # 執行
+    if __name__ == '__main__':
+        window = tk.Tk()
+        window.wm_attributes('-topmost', True)  # 窗口置頂
+        tk.Label(window, text='日期段:').grid(row=0, column=0)
+        obj = datepicker(window, (0, 1))  # 初始化類為對象
+        startstamp1 = obj.start_date.get()  # 獲取開始時期
+        endstamp1 = obj.end_date.get()
 
-# 執行
-if __name__ == '__main__':
-    window = tk.Tk()
-    window.wm_attributes('-topmost', True)  # 窗口置頂
-    tk.Label(window, text='日期段:').grid(row=0, column=0)
-    obj = datepicker(window, (0, 1))  # 初始化類為對象
-    startstamp1 = obj.start_date.get()  # 獲取開始時期
-    endstamp1 = obj.end_date.get()
-
-    # tk.Label(window,text='日期段二:').grid(row=1,column=0)
-    # obj=datepicker(window,(1,1))
-    # startstamp2=obj.start_date.get()
-    # endstamp2=obj.end_date.get()
-    tk.Button(window, text="print",
-              command=close_window)
-    window.geometry("450x400")
-    window.title("調閱收支")
-    window.configure(bg='red')
-    window.mainloop()
-
-
-"""讀取以前資料
-rev = []
-exp = []
-with open(file='data.txt', mode='r', encoding='utf-8') as f:
-    change = False
-    for line in f:
-        line = line.strip()
-        if line == "ExpEnd" or line == "RevEnd":
-            change = not True
-            continue
-        line = line.split()
-        if change:
-            rev.append(line)
-        else:
-            exp.append(line)
-"""
+        # tk.Label(window,text='日期段二:').grid(row=1,column=0)
+        # obj=datepicker(window,(1,1))
+        # startstamp2=obj.start_date.get()
+        # endstamp2=obj.end_date.get()
+        tk.Button(window, text="print",
+                command=close_window)
+        window.geometry("450x400")
+        window.title("調閱收支")
+        window.configure(bg='red')
+        window.mainloop()
 
 
-"""輸出結果為表格形式"""
-exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
-# exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
-rev = [["收入", "2020-11-02", "家教", "800"]]
+    """輸出結果為表格形式"""
+    # exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
+    # exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
+    # rev = [["收入", "2020/11/02", "家教", "800"]]
 
 
-result = tk.Tk()
-tree = ttk.Treeview(result)  # 表格
-tree["columns"] = ("收支", "時間", "類別", "金額")
-tree.column("收支", width=100)
-tree.column("時間", width=200)  # 表示列,不顯示
-tree.column("類別", width=100)
-tree.column("金額", width=100)
+    result = tk.Tk()
+    tree = ttk.Treeview(result)  # 表格
+    tree["columns"] = ("收支", "時間", "類別", "金額")
+    tree.column("收支", width=100)
+    tree.column("時間", width=200)  # 表示列,不顯示
+    tree.column("類別", width=100)
+    tree.column("金額", width=100)
 
-tree.heading("收支", text="收支")
-tree.heading("時間", text="時間")  # 顯示錶頭
-tree.heading("類別", text="類別")
-tree.heading("金額", text="金額")
+    tree.heading("收支", text="收支")
+    tree.heading("時間", text="時間")  # 顯示錶頭
+    tree.heading("類別", text="類別")
+    tree.heading("金額", text="金額")
 
-# print("#" + st_date)
-# print("#" + ed_date)
+    # print("#" + st_date)
+    # print("#" + ed_date)
 
-for i in range(len(rev)):
-    # in_date = '2016-08-31'
-    st_dt = datetime.datetime.strptime(st_date, "%Y-%m-%d")
-    lf_date = (st_dt + datetime.timedelta(days=-1)).strftime("%Y/%m/%d")
-    # st_date = st_date.replace('-', '/')
-    # print(st_date)
+    st_dt = r_datetime.datetime.strptime(st_date, "%Y-%m-%d")
+    lf_date = (st_dt + r_datetime.timedelta(days=-1)).strftime("%Y/%m/%d")
+    # rt_date = (ed_dt + r_datetime.timedelta(days=1)).strftime("%Y/%m/%d")
+    rt_date = ed_date.replace('-', '/')
+    """收入的範圍"""
     lf_line = ["收入", lf_date, "", ""]
-    print(lf_line)
-    # lf_pos = func.bisearch(rev, lf_line)
-    # word = rev[i].split(",")
-    # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
-    tree.insert("", i, values=(rev[i][0], rev[i]
-                               [1], rev[i][2], rev[i][3]))  # 插入資料
+    rt_line = ["收入", rt_date, "", ""]
+    lf_pos = func.bisearch(gvar.rev, lf_line)
+    rt_pos = func.bisearch(gvar.rev, rt_line)
+    for i in range(lf_pos, rt_pos):
+        tree.insert("", i, values=(gvar.rev[i][0], gvar.rev[i]
+                                [1], gvar.rev[i][2], gvar.rev[i][3]))  # 插入資料
 
-for i in range(len(exp)):
-    ed_date = ed_date.replace('-', '/')
-    ed_line = ["收入", ed_date, "", ""]
-    # word = exp[i].split(",")
-    # tree.insert("", i, values=(word[0], word[1], word[2], word[3]))  # 插入資料
-    tree.insert("", i, values=(exp[i][0], exp[i]
-                               [1], exp[i][2], exp[i][3]))  # 插入資料
+    lf_line = ["支出", lf_date, "", ""]
+    rt_line = ["支出", rt_date, "", ""]
+    lf_pos = func.bisearch(gvar.exp, lf_line)
+    rt_pos = func.bisearch(gvar.exp, rt_line)
 
+    for i in range(lf_pos, rt_pos):
+        tree.insert("", i, values=(gvar.exp[i][0], gvar.exp[i]
+                                [1], gvar.exp[i][2], gvar.exp[i][3]))  # 插入資料
 
-tree.pack()
-result.configure(bg='red')
-result.mainloop()
+    tree.pack()
+    result.configure(bg='red')
+    result.mainloop()
