@@ -7,13 +7,17 @@ import func
 import datetime as r_datetime
 import time as r_time
 import gvar
+import read_old_data as readold
+import matplotlib.pyplot as plt
+import numpy as np
 datetime = calendar.datetime.datetime
 timedelta = calendar.datetime.timedelta
 
+readold.do()
 """用日曆選擇想要查的時間段"""
 
-st_date = "0000/00/00"
-ed_date = "0000/00/00"
+st_date = "2020-12-25"
+ed_date = "2020-12-25"
 
 
 class Calendar:
@@ -340,6 +344,86 @@ if __name__ == '__main__':
     window.mainloop()
 
 
+def print_graph():
+    # 設讀取資料型態[[收入／支出,日期,類別,金額]]
+    # thisrev 為已經篩選出時間範圍內的收入資料list
+    # thisexp 為已經篩選出時間範圍內的支出資料list
+
+    food_exp = 0  # 食
+    clothing_exp = 0  # 衣
+    living_exp = 0  # 住
+    trans_exp = 0  # 行
+    learning_exp = 0  # 育
+    entertainment_exp = 0  # 樂
+    medical_exp = 0  # 醫療
+
+    salary = 0  # 薪資
+    wage = 0  # 打工
+    allowance = 0  # 零用
+
+    # 計算收入各類別總金額
+    global thisrev, thisexp
+    for data in thisrev:
+        if data[2] == '食':
+            food_exp += int(data[3])
+        elif data[2] == '衣':
+            clothing_exp += int(data[3])
+        elif data[2] == '住':
+            living_exp += int(data[3])
+        elif data[2] == '行':
+            trans_exp += int(data[3])
+        elif data[2] == '育':
+            learning_exp += int(data[3])
+        elif data[2] == '樂':
+            entertainment_exp += int(data[3])
+        elif data[2] == '醫療':
+            medical_exp += int(data[3])
+
+    # 計算支出各類別總金額
+
+    for data in thisexp:
+        if data[2] == '薪資':
+            salary += int(data[3])
+        elif data[2] == '打工':
+            wage += int(data[3])
+        elif data[2] == '零用':
+            allowance += int(data[3])
+
+    #  以下為支出圓餅圖的部分
+
+    fig, ax = plt.subplots(figsize=(8, 6), subplot_kw=dict(aspect='equal'))
+    fig.patch.set_facecolor('black')
+
+    labels = ['food', 'clothing', 'living', 'transportation',
+              'learning', 'entertainment', 'medical_care']
+    exp = [food_exp, clothing_exp, living_exp, trans_exp,
+           learning_exp, entertainment_exp, medical_exp]
+    color = ['mistyrose', 'bisque', 'lavender', 'lightcyan',
+             'honeydew', 'lightgray', 'paleturquoise']
+
+    wedges, texts, auto = ax.pie(exp, wedgeprops=dict(
+        width=0.5), startangle=-40, colors=color, autopct='%.1f%%', pctdistance=0.85)
+
+    bbox_props = dict(boxstyle='square,pad=0.3', fc='w', ec='k', lw=0.72)
+    kw = dict(arrowprops=dict(arrowstyle='-'),
+              bbox=bbox_props, zorder=0, va='center')
+
+    for i, p in enumerate(wedges):
+        ang = (p.theta2 - p.theta1)/2. + p.theta1
+        y = np.sin(np.deg2rad(ang))
+        x = np.cos(np.deg2rad(ang))
+        horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+        kw["arrowprops"].update({"connectionstyle": connectionstyle})
+
+    ax.set_title("Donut for expense")
+
+    plt.legend(wedges, labels, loc='best', bbox_to_anchor=(-0.1, 1.),
+               fontsize=8)
+
+    plt.show()
+
+
 """輸出結果為表格形式"""
 # exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
 # exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
@@ -371,6 +455,9 @@ lf_line = ["收入", lf_date, "", ""]
 rt_line = ["收入", rt_date, "", ""]
 lf_pos = func.bisearch(gvar.rev, lf_line)
 rt_pos = func.bisearch(gvar.rev, rt_line)
+
+thisrev = gvar.rev[lf_pos:rt_pos]
+# print(thisrev)
 for i in range(lf_pos, rt_pos):
     tree.insert("", i, values=(gvar.rev[i][0], gvar.rev[i]
                                [1], gvar.rev[i][2], gvar.rev[i][3]))  # 插入資料
@@ -380,10 +467,13 @@ rt_line = ["支出", rt_date, "", ""]
 lf_pos = func.bisearch(gvar.exp, lf_line)
 rt_pos = func.bisearch(gvar.exp, rt_line)
 
+thisexp = gvar.exp[lf_pos:rt_pos]
 for i in range(lf_pos, rt_pos):
     tree.insert("", i, values=(gvar.exp[i][0], gvar.exp[i]
                                [1], gvar.exp[i][2], gvar.exp[i][3]))  # 插入資料
-
 tree.pack()
+print_graph()
+
+
 result.configure(bg='red')
 result.mainloop()

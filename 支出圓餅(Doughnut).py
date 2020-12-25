@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import timecalendar as tc
 # 設讀取資料型態[[收入／支出,日期,類別,金額]]
 # thisrev 為已經篩選出時間範圍內的收入資料list
 # thisexp 為已經篩選出時間範圍內的支出資料list
@@ -50,14 +50,19 @@ for data in thisexp:
 fig, ax = plt.subplots(figsize=(8, 6), subplot_kw=dict(aspect='equal'))
 fig.patch.set_facecolor('black')
 
-labels = ['food', 'clothing', 'living', 'transportation', 'learning', 'entertainment', 'medical_care']
-exp = [food_exp, clothing_exp, living_exp, trans_exp, learning_exp, entertainment_exp, medical_exp]
-color = ['mistyrose', 'bisque', 'lavender', 'lightcyan', 'honeydew', 'lightgray', 'paleturquoise']
+labels = ['food', 'clothing', 'living', 'transportation',
+          'learning', 'entertainment', 'medical_care']
+exp = [food_exp, clothing_exp, living_exp, trans_exp,
+       learning_exp, entertainment_exp, medical_exp]
+color = ['mistyrose', 'bisque', 'lavender', 'lightcyan',
+         'honeydew', 'lightgray', 'paleturquoise']
 
-wedges, texts, auto = ax.pie(exp, wedgeprops=dict(width=0.5), startangle=-40, colors=color, autopct='%.1f%%', pctdistance=0.85)
+wedges, texts, auto = ax.pie(exp, wedgeprops=dict(
+    width=0.5), startangle=-40, colors=color, autopct='%.1f%%', pctdistance=0.85)
 
 bbox_props = dict(boxstyle='square,pad=0.3', fc='w', ec='k', lw=0.72)
-kw = dict(arrowprops=dict(arrowstyle='-'), bbox=bbox_props, zorder=0, va='center')
+kw = dict(arrowprops=dict(arrowstyle='-'),
+          bbox=bbox_props, zorder=0, va='center')
 
 for i, p in enumerate(wedges):
     ang = (p.theta2 - p.theta1)/2. + p.theta1
