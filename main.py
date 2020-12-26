@@ -9,7 +9,6 @@ import gvar
 import time
 import datetime
 import func
-import timecalendar_g as timeg
 
 
 def homewin():
@@ -18,26 +17,26 @@ def homewin():
 
 
 def statwin():
-    timeg.do()
+    timebug.do()
 
 
 read_old_data.do()
 print(gvar.rev)
 
-mwindow = tk.Tk()
-mwindow.title("Test")
+window = tk.Tk()
+window.title("Test")
 
-menubar = tk.Menu(mwindow)
+menubar = tk.Menu(window)
 # menubar.add_command(label="主頁", command=homewin)
 # menubar.add_command(label="明細", command = )
 menubar.add_command(label="統計", command=statwin)
-menubar.add_command(label="退出", command=mwindow.quit)
-mwindow.config(menu=menubar)
-mwindow.title('記帳小幫手')
-mwindow.geometry('800x600')
-mwindow.configure(background='pink')
+menubar.add_command(label="退出", command=window.quit)
+window.config(menu=menubar)
+window.title('記帳小幫手')
+window.geometry('800x600')
+window.configure(background='pink')
 
-header_label = tk.Label(mwindow, text='記帳小幫手')
+header_label = tk.Label(window, text='記帳小幫手')
 header_label.pack()
 
 #  支出/收入、日期、類別、金額
@@ -45,12 +44,12 @@ header_label.pack()
 #  以下為支出/收入下拉式選單的部分
 nopt = tk.StringVar()
 options = ('收入', '支出')
-option = ttk.Combobox(mwindow, width=30, textvariable=nopt, values=options)
+option = ttk.Combobox(window, width=30, textvariable=nopt, values=options)
 option.pack(side=tk.TOP)
 
 #  以下為使用者輸入日期的部分
 ndate = tk.StringVar()
-date_frame = tk.Frame(mwindow)
+date_frame = tk.Frame(window)
 date_frame.pack(side=tk.TOP)
 date_label = tk.Label(date_frame, text='日期：(xxxx/xx/xx)')
 date_label.pack(side=tk.LEFT)
@@ -61,12 +60,12 @@ date_entry.pack(side=tk.LEFT)
 ncat = tk.StringVar()
 categories = ('食', '衣', '住', '行', '育', '樂', '醫療', '薪資', '打工', '零用')
 category = ttk.Combobox(
-    mwindow, width=30, textvariable=ncat, values=categories)
+    window, width=30, textvariable=ncat, values=categories)
 category.pack(side=tk.TOP)
 
 #  以下為金額的部分
 nmoney = tk.StringVar()
-money_frame = tk.Frame(mwindow)
+money_frame = tk.Frame(window)
 money_frame.pack(side=tk.TOP)
 money_label = tk.Label(money_frame, text='金額：(NTD)')
 money_label.pack(side=tk.LEFT)
@@ -93,9 +92,9 @@ def getdata():
     update_data_file.do()
 
 
-press = tk.Button(mwindow, text="新增", command=getdata)
+press = tk.Button(window, text="新增", command=getdata)
 press.pack()
 
-mwindow.mainloop()
+window.mainloop()
 
 # root.mainloop()
