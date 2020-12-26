@@ -3,7 +3,7 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 import time
 import datetime
-import func
+# import func
 
 
 """def homewin():
