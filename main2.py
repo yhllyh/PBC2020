@@ -1,37 +1,39 @@
-import gvar
-import read_old_data
-import add_new_data
+"""引用各種套件"""
+import emoji
+import func
 import update_data_file
+import add_new_data
+import read_old_data
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import gvar
 import time
 import datetime
-import func
-# import timecalendar_g as timeg
 from PIL import Image, ImageTk
 from tkinter import ttk  # 匯入內部包
 import calendar
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
-import func
 import datetime as r_datetime
 import time as r_time
-import gvar
 import matplotlib.pyplot as plt
 import numpy as np
+"""引入其他檔案"""
 datetime = calendar.datetime.datetime
 timedelta = calendar.datetime.timedelta
 
-"""用日曆選擇想要查的時間段"""
 
-st_date = "2020-12-25"
-ed_date = "2020-12-25"
+"""統計部分"""
+"""擷取時間段"""
 
 
-def do():
+def timecalendar():
+    """用日曆選擇想要查的時間段"""
+    st_date = "2020-12-25"
+    ed_date = "2020-12-25"
+
     def showpic():
         win = tk.Toplevel()
         win.title("win")
@@ -546,25 +548,39 @@ def do():
     # root.mainloop()
 
 
+"""Button 指令整理"""
+# 主頁
+
+
 def homewin():
     add_new_data.do()
     update_data_file.do()
 
+# 統計
+
 
 def statwin():
-    do()
+    timecalendar()
+
+# 心情
+
+
+def askemoji():
+    emoji.do()
 
 
 read_old_data.do()
 print(gvar.rev)
 
 mwindow = tk.Tk()
+mwindow.iconbitmap('homeicon.ico')
 mwindow.title("Test")
 
 menubar = tk.Menu(mwindow)
 # menubar.add_command(label="主頁", command=homewin)
 # menubar.add_command(label="明細", command = )
 menubar.add_command(label="統計", command=statwin)
+menubar.add_command(label="心情", command=askemoji)
 menubar.add_command(label="退出", command=mwindow.quit)
 mwindow.config(menu=menubar)
 mwindow.title('記帳小幫手')
@@ -573,6 +589,10 @@ mwindow.configure(background='pink')
 
 header_label = tk.Label(mwindow, text='記帳小幫手')
 header_label.pack()
+img_open = Image.open('homeicon.ico')
+img_jpg = ImageTk.PhotoImage(img_open)
+home_icon = tk.Label(mwindow, image=img_jpg)
+home_icon.pack()
 
 #  支出/收入、日期、類別、金額
 
@@ -622,8 +642,6 @@ def getdata():
         gvar.exp.insert(pos, line)
     else:
         messagebox.showinfo("輸入錯誤", "數值錯誤")
-    # messagebox.showinfo("已新增", line)
-    # print(cur_opt, cur_date, cur_cat, cur_money)
     update_data_file.do()
 
 
@@ -631,5 +649,3 @@ press = tk.Button(mwindow, text="新增", command=getdata)
 press.pack()
 
 mwindow.mainloop()
-
-# root.mainloop()
