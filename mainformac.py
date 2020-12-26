@@ -1,25 +1,21 @@
-import gvar
-import read_old_data
-import add_new_data
-import update_data_file
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
-import gvar
 import time
 import datetime
 import func
 
 
-def homewin():
+"""def homewin():
     add_new_data.do()
     update_data_file.do()
 
 
 def statwin():
-    timebug.do()
+    timebug.do()"""
 
-
+rev = []
+exp = []
 with open(file='data.txt', mode='r', encoding='utf-8') as f:
     change = False
     for line in f:
@@ -29,9 +25,9 @@ with open(file='data.txt', mode='r', encoding='utf-8') as f:
             continue
         line = line.split()
         if change:
-            gvar.rev.append(line)
+            rev.append(line)
         else:
-            gvar.exp.append(line)
+            exp.append(line)
 
 window = tk.Tk()
 window.title("Test")
@@ -39,7 +35,7 @@ window.title("Test")
 menubar = tk.Menu(window)
 # menubar.add_command(label="主頁", command=homewin)
 # menubar.add_command(label="明細", command = )
-menubar.add_command(label="統計", command=statwin)
+menubar.add_command(label="統計", command=window.quit)
 menubar.add_command(label="退出", command=window.quit)
 window.config(menu=menubar)
 window.title('記帳小幫手')
@@ -90,22 +86,22 @@ def getdata():
     cur_money = nmoney.get()
     line = [cur_opt, cur_date, cur_cat, cur_money]
     if(cur_opt == "收入"):
-        pos = func.bisearch(gvar.rev, line)
-        gvar.rev.insert(pos, line)
+        pos = func.bisearch(rev, line)
+        rev.insert(pos, line)
     elif(cur_opt == "支出"):
-        pos = func.bisearch(gvar.exp, line)
-        gvar.exp.insert(pos, line)
+        pos = func.bisearch(exp, line)
+        exp.insert(pos, line)
     else:
         messagebox.showinfo("輸入錯誤", "數值錯誤")
     # messagebox.showinfo("已新增", line)
     # print(cur_opt, cur_date, cur_cat, cur_money)
     try:
         f = open(file="data.txt", mode='w', encoding='utf-8')
-        for item in gvar.exp:
+        for item in exp:
             line = " ".join(item)
             f.write(line + "\n")
         f.write("ExpEnd\n")
-        for item in gvar.rev:
+        for item in rev:
             line = " ".join(item)
             f.write(line + "\n")
         f.write("RevEnd\n")
