@@ -11,7 +11,7 @@ import gvar
 import time
 import datetime
 from PIL import Image, ImageTk
-from tkinter import ttk  # 匯入內部包
+from tkinter import ttk
 import calendar
 import tkinter as tk
 import tkinter.font as tkFont
@@ -20,7 +20,7 @@ import datetime as r_datetime
 import time as r_time
 import matplotlib.pyplot as plt
 import numpy as np
-"""引入其他檔案"""
+
 datetime = calendar.datetime.datetime
 timedelta = calendar.datetime.timedelta
 st_date = "2020-12-25"
@@ -681,6 +681,10 @@ def getdata():
     cur_date = ndate.get()
     cur_cat = ncat.get()
     cur_money = nmoney.get()
+    category.delete(0, tk.END)
+    option.delete(0, tk.END)
+    date_entry.delete("0", "end")
+    money_entry.delete("0", "end")
     line = [cur_opt, cur_date, cur_cat, cur_money]
     if(cur_opt == "收入"):
         pos = func.bisearch(gvar.rev, line)
