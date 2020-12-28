@@ -2,7 +2,6 @@
 import emoji
 import func
 import update_data_file
-import add_new_data
 import read_old_data
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -36,6 +35,7 @@ medical_exp = 0  # 醫療
 salary = 0  # 薪資
 wage = 0  # 打工
 allowance = 0  # 零用
+
 
 """統計部分"""
 """擷取時間段"""
@@ -427,17 +427,6 @@ def timecalendar():
         # thisexp 為已經篩選出時間範圍內的支出資料list
         global food_exp, clothing_exp, living_exp, trans_exp, learning_exp, entertainment_exp, medical_exp
         global salary, wage, allowance
-        """food_exp = 0  # 食
-        clothing_exp = 0  # 衣
-        living_exp = 0  # 住
-        trans_exp = 0  # 行
-        learning_exp = 0  # 育
-        entertainment_exp = 0  # 樂
-        medical_exp = 0  # 醫療
-
-        salary = 0  # 薪資
-        wage = 0  # 打工
-        allowance = 0  # 零用"""
 
         # 計算收入各類別總金額
         # global gvar.thisrev, gvar.thisexp
@@ -496,8 +485,8 @@ def timecalendar():
 
         ax.set_title("Donut for expense")
 
-        plt.legend(wedges, labels, loc='best', bbox_to_anchor=(-0.1, 1.),
-                   fontsize=8)
+        plt.legend(wedges, labels, loc='upper center', bbox_to_anchor=(-0.1, 1.),
+                   fontsize=12)
 
         # plt.show()
         plt.savefig('exp_donut.jpg')
@@ -528,8 +517,8 @@ def timecalendar():
 
         ax.set_title("Donut for revenue")
 
-        plt.legend(wedges, labels_rev, loc='best', bbox_to_anchor=(-0.1, 1.),
-                   fontsize=8)
+        plt.legend(wedges, labels_rev, loc='center', bbox_to_anchor=(-0.1, 1.),
+                   fontsize=15)
         plt.savefig('rev_donut.jpg')
 
     """輸出結果為表格形式"""
@@ -580,8 +569,8 @@ def timecalendar():
 
     gvar.thisexp = gvar.exp[lf_pos:rt_pos]
     for i in range(lf_pos, rt_pos):
-        tree.insert("", i, values=(gvar.exp[i][0], gvar.exp[i]
-                                   [1], gvar.exp[i][2], gvar.exp[i][3]))  # 插入資料
+        tree.insert("", len(gvar.thisrev)+i, values=(gvar.exp[i][0], gvar.exp[i]
+                                                     [1], gvar.exp[i][2], gvar.exp[i][3]))  # 插入資料
     tree.pack()
     # print_graph()
     stat()
@@ -618,7 +607,6 @@ def askemoji():
 
 
 read_old_data.do()
-print(gvar.rev)
 
 mwindow = tk.Tk()
 mwindow.iconbitmap('homeicon.ico')
