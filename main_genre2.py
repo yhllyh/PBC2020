@@ -177,7 +177,7 @@ def timecalendar():
         def __place_widgets(s):
             # 標頭框架及其小部件
             Input_judgment_num = s.master.register(
-                s.Input_judgment)  # 需要将函数包装一下，必要的
+                s.Input_judgment)  # 需要將函数包裝一下
             hframe = ttk.Frame(s.G_Frame)
             gframe = ttk.Frame(s.G_Frame)
             bframe = ttk.Frame(s.G_Frame)
@@ -203,7 +203,7 @@ def timecalendar():
             s.CB_month.bind("<<ComboboxSelected>>", s._update)
             tk.Label(hframe, text='月', justify='left').grid(
                 in_=hframe, column=4, row=0)
-            # 日历部件
+            # 日歷部件
             s._calendar = ttk.Treeview(
                 gframe, show='', selectmode='none', height=7)
             s._calendar.pack(expand=1, fill='both', side='bottom', padx=5)
@@ -417,7 +417,7 @@ def timecalendar():
                   command=close_window)
         window.geometry("450x400")
         window.title("調閱收支")
-        window.configure(bg='red')
+        window.configure(bg='palevioletred')
         window.wait_window()
         # window.mainloop()
 
@@ -590,7 +590,7 @@ def timecalendar():
     show_donut = tk.Button(result, text="圓餅圖", command=showpic)
     show_donut.pack()
     # show_edonut = tk.Button(root, text="show picture", command=showpic(rev_donut.jpg))
-    result.configure(bg='red')
+    result.configure(bg='palevioletred')
     result.wait_window()
     # result.mainloop()
     # root.mainloop()
