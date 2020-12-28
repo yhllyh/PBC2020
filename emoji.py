@@ -22,6 +22,7 @@ def do():
     root = tk.Toplevel()
     root.title("本日心情對話")
     root.geometry("425x250")
+    root.configure(bg='lightcoral')
     ttk.Label(root, text="今天心情如何呢?").grid(row=0, column=1, columnspan=2)
     ttk.Button(root, text="開心(｡◕∀◕｡)", command=happy).grid(row=1, column=0)
     ttk.Button(root, text="一般般(́◉◞౪◟◉‵)", command=soso).grid(row=1, column=1)
