@@ -3,11 +3,11 @@ import emoji
 import func
 import update_data_file
 import read_old_data
+import gvar
+import time
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
-import gvar
-import time
 import datetime
 from PIL import Image, ImageTk
 from tkinter import ttk
@@ -48,28 +48,27 @@ def timecalendar():
         genre_0.title('按類別統計')
         global food_exp, clothing_exp, living_exp, trans_exp, learning_exp, entertainment_exp, medical_exp
         global salary, wage, allowance
-        # print(salary)
         lblNum_r1 = tk.Label(genre_0, text=' 薪資   ' +
-                             str(salary), bg='yellow')
+                             str(salary), bg='pink')
         lblNum_r2 = tk.Label(genre_0, text=' 打工   ' +
-                             str(wage), bg='skyblue')
+                             str(wage), bg='pink')
         lblNum_r3 = tk.Label(genre_0, text=' 零用   ' +
                              str(allowance), bg='pink')
         lblNum_r1.pack()
         lblNum_r2.pack()
         lblNum_r3.pack()
         lblNum_e1 = tk.Label(genre_0, text=' 食   ' +
-                             str(food_exp), bg='yellow')
+                             str(food_exp), bg='skyblue')
         lblNum_e2 = tk.Label(genre_0, text=' 衣   ' +
                              str(clothing_exp), bg='skyblue')
         lblNum_e3 = tk.Label(genre_0, text=' 住   ' +
-                             str(living_exp), bg='pink')
+                             str(living_exp), bg='skyblue')
         lblNum_e4 = tk.Label(genre_0, text=' 行   ' +
-                             str(trans_exp), bg='#F8F8FF')
+                             str(trans_exp), bg='skyblue')
         lblNum_e5 = tk.Label(genre_0, text=' 育   ' +
-                             str(learning_exp), bg='#4169E1')
+                             str(learning_exp), bg='skyblue')
         lblNum_e6 = tk.Label(genre_0, text=' 樂   ' +
-                             str(entertainment_exp), bg='#F08080')
+                             str(entertainment_exp), bg='skyblue')
         lblNum_e1.pack()
         lblNum_e2.pack()
         lblNum_e3.pack()
@@ -409,10 +408,6 @@ def timecalendar():
         startstamp1 = obj.start_date.get()  # 獲取開始時期
         endstamp1 = obj.end_date.get()
 
-        # tk.Label(window,text='日期段二:').grid(row=1,column=0)
-        # obj=datepicker(window,(1,1))
-        # startstamp2=obj.start_date.get()
-        # endstamp2=obj.end_date.get()
         tk.Button(window, text="print",
                   command=close_window)
         window.geometry("450x400")
@@ -457,16 +452,15 @@ def timecalendar():
                 allowance += int(data[3])
 
         #  以下為支出圓餅圖的部分
-
         fig, ax = plt.subplots(figsize=(8, 6), subplot_kw=dict(aspect='equal'))
         fig.patch.set_facecolor('black')
 
         labels = ['food', 'clothing', 'living', 'transportation',
-                  'learning', 'entertainment', 'medical_care']
+                  'learning', 'entertainment', 'medical_care']  # 標籤
         exp = [food_exp, clothing_exp, living_exp, trans_exp,
-               learning_exp, entertainment_exp, medical_exp]
+               learning_exp, entertainment_exp, medical_exp]  # 資料值
         color = ['mistyrose', 'bisque', 'lavender', 'lightcyan',
-                 'honeydew', 'lightgray', 'paleturquoise']
+                 'honeydew', 'lightgray', 'paleturquoise']  # 對應的顏色
 
         wedges, texts, auto = ax.pie(exp, wedgeprops=dict(
             width=0.5), startangle=-40, colors=color, autopct='%.1f%%', pctdistance=0.85)
@@ -488,7 +482,6 @@ def timecalendar():
         plt.legend(wedges, labels, loc='upper center', bbox_to_anchor=(-0.1, 1.),
                    fontsize=12)
 
-        # plt.show()
         plt.savefig('exp_donut.jpg')
         plt.clf()
         # 以下為收入圓餅圖部分
@@ -522,10 +515,6 @@ def timecalendar():
         plt.savefig('rev_donut.jpg')
 
     """輸出結果為表格形式"""
-    # exp = [["支出", "2020/10/20", "午餐", "168"], ["支出", "2020/10/21", "午餐", "100"]]
-    # exp = ["2020-10-20, 支出, 午餐, 168", "2020-10-25, 支出, 晚餐,98"]
-    # rev = [["收入", "2020/11/02", "家教", "800"]]
-
     result = tk.Toplevel()
     result.title("result")
     tree = ttk.Treeview(result)  # 表格
@@ -540,12 +529,8 @@ def timecalendar():
     tree.heading("類別", text="類別")
     tree.heading("金額", text="金額")
 
-    # print("#" + st_date)
-    # print("#" + ed_date)
-
     st_dt = r_datetime.datetime.strptime(st_date, "%Y-%m-%d")
     lf_date = (st_dt + r_datetime.timedelta(days=-1)).strftime("%Y/%m/%d")
-    # rt_date = (ed_dt + r_datetime.timedelta(days=1)).strftime("%Y/%m/%d")
     rt_date = ed_date.replace('-', '/')
     """收入的範圍"""
     lf_line = ["收入", lf_date, "", ""]
@@ -555,10 +540,6 @@ def timecalendar():
     rt_pos = func.bisearch(gvar.rev, rt_line)
 
     gvar.thisrev = gvar.rev[lf_pos:rt_pos]
-    # print(thisrev)
-    # for i in range(lf_pos, rt_pos):
-    # tree.insert("", i, values=(gvar.rev[i][0], gvar.rev[i]
-    #    [1], gvar.rev[i][2], gvar.rev[i][3]))  # 插入資料
     for i in range(len(gvar.thisrev)):
         tree.insert("", i, values=(
             gvar.thisrev[i][0], gvar.thisrev[i][1], gvar.thisrev[i][2], gvar.thisrev[i][3]))
@@ -612,16 +593,16 @@ mwindow = tk.Tk()
 mwindow.iconbitmap('homeicon.ico')
 mwindow.title("Test")
 
+# 建立主頁視窗
 menubar = tk.Menu(mwindow)
-# menubar.add_command(label="主頁", command=homewin)
-# menubar.add_command(label="明細", command = )
+mwindow.title('記帳小幫手')
+mwindow.geometry('800x600')
+# 設定菜單欄各個按鈕
 menubar.add_command(label="統計", command=statwin)
 menubar.add_command(label="心情", command=askemoji)
 menubar.add_command(label="退出", command=mwindow.quit)
 mwindow.config(menu=menubar)
-mwindow.title('記帳小幫手')
-mwindow.geometry('800x600')
-mwindow.configure(background='pink')
+mwindow.configure(background='pink')  # 背景顏色
 
 header_label = tk.Label(mwindow, text='記帳小幫手')
 header_label.pack()
